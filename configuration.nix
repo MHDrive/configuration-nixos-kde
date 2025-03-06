@@ -79,7 +79,7 @@
 
   # Install firefox.
   programs.firefox.enable = true;
-
+  programs.starship.enable = true;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -93,12 +93,34 @@
   
   # ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # nix.settings = {
+  #   substituters = ["https://hyprland.cachix.org"];
+  #   trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+  # };
+ 
   environment.systemPackages = [
    (import ./my-awesome-script.nix { inherit pkgs; })
    pkgs.vscode
    pkgs.git
    pkgs.tree
    pkgs.vim
+   pkgs.neovim
+   pkgs.mesa-demos
+   pkgs.libreoffice-qt6-fresh
+   pkgs.pcsx2
+   pkgs.jstest-gtk
+   pkgs.telegram-desktop
+   pkgs.htop
+   pkgs.spotify
+   pkgs.bat
+   pkgs.flatpak
+   pkgs.lshw
+   pkgs.vlc
+   pkgs.discord
+   pkgs.lua54Packages.lua
+   pkgs.ripgrep
+   pkgs.fd
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -113,7 +135,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-
+  services.flatpak.enable = true;
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

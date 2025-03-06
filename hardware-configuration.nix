@@ -38,4 +38,35 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  
+  hardware = {
+    graphics = {
+     enable = true;
+     extraPackages = with pkgs; [
+       intel-media-driver
+       intel-vaapi-driver
+       libva-vdpau-driver
+       libvdpau-va-gl
+       nvidia-vaapi-driver
+       vpl-gpu-rt
+     ];
+    };
+    nvidia = {
+      package = config.boot.kernelPackages.nvidiaPackages.production; #legacy_535 / production
+      modesetting.enable = true;
+      powerManagement.enable = true;
+      nvidiaSettings = true;
+      prime = {
+        offload = {
+           enable = true;
+           enableOffloadCmd = true;
+        };
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
+    };
+  };
+  services.xserver.videoDrivers = [
+    "nvidia"
+  ];
 }
