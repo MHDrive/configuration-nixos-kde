@@ -80,6 +80,11 @@
   # Install firefox.
   programs.firefox.enable = true;
   programs.starship.enable = true;
+  programs.steam = {
+	enable = true;
+	remotePlay.openFirewall = true;
+	localNetworkGameTransfers.openFirewall = true;
+  };
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -101,6 +106,7 @@
  
   environment.systemPackages = [
    (import ./my-awesome-script.nix { inherit pkgs; })
+   (import ./list-specialisations.nix { inherit pkgs; })
    pkgs.vscode
    pkgs.git
    pkgs.tree
@@ -121,6 +127,8 @@
    pkgs.lua54Packages.lua
    pkgs.ripgrep
    pkgs.fd
+   pkgs.pciutils #collection of programs and manipulating config of PCI devices
+   pkgs.mangohud #monitoring fps, temp, gpu/cpu and mpre
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -140,7 +148,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

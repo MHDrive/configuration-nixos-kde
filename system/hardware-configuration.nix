@@ -3,13 +3,17 @@
 # to /etc/nixos/configuration.nix instead.
 { config, lib, pkgs, modulesPath, ... }:
 
+let
+  intelBus = "PCI:0:2:0";
+  nvidiaBus = "PCI:1:0:0";
+in 
 {
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "rtsx_usb_sdmmc" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = ["i915"];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
@@ -42,6 +46,7 @@
   hardware = {
     graphics = {
      enable = true;
+	 enable32Bit = true;
      extraPackages = with pkgs; [
        intel-media-driver
        intel-vaapi-driver
@@ -50,6 +55,11 @@
        nvidia-vaapi-driver
        vpl-gpu-rt
      ];
+	extraPackages32 = with pkgs.driversi686Linux; [
+        intel-vaapi-driver
+        libva-vdpau-driver  
+        libvdpau-va-gl
+    ];
     };
     nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.production; #legacy_535 / production
@@ -61,12 +71,43 @@
            enable = true;
            enableOffloadCmd = true;
         };
-        intelBusId = "PCI:0:2:0";
-        nvidiaBusId = "PCI:1:0:0";
+        intelBusId = intelBus;
+        nvidiaBusId = nvidiaBus;
       };
     };
   };
   services.xserver.videoDrivers = [
     "nvidia"
   ];
+
+  environment.systemPackages = with pkgs; [
+  	(pkgs.writeShellScriptBin "nvidia-offload" ''
+      export __NV_PRIME_RENDER_OFFLOAD=1
+      export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+      export __GLX_VENDOR_LIBRARY_NAME=nvidia
+      export __VK_LAYER_NV_optimus=NVIDIA_only
+      exec "$@"
+    '')
+  ];
+  specialisation = {
+  	hybird-sync = {
+		inheritParentConfig = true;
+		configuration = {
+			system.nixos.tags = [ "hybrid-sync" ];
+
+			hardware.nvidia = {
+				powerManagement.enable = lib.mkForce false;
+				prime = {
+					sync.enable = lib.mkForce true;
+					offload = {
+						enable = lib.mkForce false;
+						enableOffloadCmd = lib.mkForce false;
+					};
+					intelBusId = intelBus;
+					nvidiaBusId = nvidiaBus;
+				};
+			};
+		};
+	};
+  };
 }
