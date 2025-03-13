@@ -1,7 +1,7 @@
 { pkgs }:
 
 pkgs.writeShellScriptBin "gpu-switch" ''
-	#!/bin/sh
+	#! /bin/sh
     case "$1" in
 		default|offload)
 			echo "Beralih ke mode default (hybrid offload)..."

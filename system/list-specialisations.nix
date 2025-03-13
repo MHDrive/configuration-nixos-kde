@@ -1,7 +1,7 @@
 { pkgs }:
 
 pkgs.writeShellScriptBin "list-specialisations" ''
-	#!/bin/sh
+	#! /bin/sh
 	echo "Specialisations yang tersedia:"
 	for spec in /run/current-system/specialisation/*; do
 	  if [ -d "$spec" ]; then
@@ -10,11 +10,12 @@ pkgs.writeShellScriptBin "list-specialisations" ''
 	  fi
 	done
 
-	current=$(readlink -f /run/booted-system)
-	if [[ $current == *specialisation* ]]; then
-	  active=$(echo $current | sed -n 's/.*specialisation\/\([^/]*\)\/.*/\1/p')
-	  echo -e "\nSpecialisation aktif: $active"
+	current=$(readlink -f "/run/booted-system")
+	if echo "$current" | grep -q "specialisation"; then
+	  active=$(echo "$current" | awk -F 'specialisation/' '{print $2}' | cut -d'/' -f1)
+	  echo "\nSpecialisation aktif: $active"
 	else
-	  echo -e "\nTidak ada specialisation yang aktif (menggunakan konfigurasi default)"
+	  echo "\nTidak ada specialisation yang aktif (menggunakan konfigurasi default)"
 	fi
+
 ''

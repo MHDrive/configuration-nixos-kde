@@ -90,7 +90,8 @@ in
     '')
   ];
   specialisation = {
-  	hybird-sync = {
+  	
+  	hybrid-sync = {
 		inheritParentConfig = true;
 		configuration = {
 			system.nixos.tags = [ "hybrid-sync" ];
