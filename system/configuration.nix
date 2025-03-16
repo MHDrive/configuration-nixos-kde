@@ -104,32 +104,33 @@
   #   trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
   # };
  
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
    (import ./my-awesome-script.nix { inherit pkgs; })
    (import ./list-specialisations.nix { inherit pkgs; })
    (import ./list-script-shell.nix { inherit pkgs; })
-   pkgs.vscode
-   pkgs.git
-   pkgs.tree
-   pkgs.vim
-   pkgs.neovim
-   pkgs.mesa-demos
-   pkgs.libreoffice-qt6-fresh
-   pkgs.pcsx2
-   pkgs.jstest-gtk
-   pkgs.telegram-desktop
-   pkgs.htop
-   pkgs.spotify
-   pkgs.bat
-   pkgs.flatpak
-   pkgs.lshw
-   pkgs.vlc
-   pkgs.discord
-   pkgs.lua54Packages.lua
-   pkgs.ripgrep
-   pkgs.fd
-   pkgs.pciutils #collection of programs and manipulating config of PCI devices
-   pkgs.mangohud #monitoring fps, temp, gpu/cpu and mpre
+   vscode
+   git
+   tree
+   vim
+   neovim
+   mesa-demos
+   libreoffice-qt6-fresh
+   pcsx2
+   jstest-gtk
+   telegram-desktop
+   htop
+   spotify
+   bat
+   flatpak
+   lshw
+   vlc
+   discord
+   lua54Packages.lua
+   ripgrep
+   fd
+   pciutils #collection of programs and manipulating config of PCI devices
+   mangohud #monitoring fps, temp, gpu/cpu and mpre
+   vulkan-loader
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
