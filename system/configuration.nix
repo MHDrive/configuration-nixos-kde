@@ -105,9 +105,10 @@
   # };
  
   environment.systemPackages = with pkgs; [
-   (import ./my-awesome-script.nix { inherit pkgs; })
-   (import ./list-specialisations.nix { inherit pkgs; })
-   (import ./list-script-shell.nix { inherit pkgs; })
+   # (import ./my-awesome-script.nix { inherit pkgs; })
+   # (import ./list-specialisations.nix { inherit pkgs; })
+   # (import ./list-script-shell.nix { inherit pkgs; })
+   (import ./my-scripts { inherit pkgs; })
    vscode
    git
    tree
