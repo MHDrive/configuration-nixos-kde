@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+	  ./hardware/asus/x441uv
     ];
 
   # Bootloader.
@@ -104,11 +105,8 @@
   #   trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
   # };
  
-  environment.systemPackages = with pkgs; [
-   # (import ./my-awesome-script.nix { inherit pkgs; })
-   # (import ./list-specialisations.nix { inherit pkgs; })
-   # (import ./list-script-shell.nix { inherit pkgs; })
-   (import ./my-scripts { inherit pkgs; })
+  environment.systemPackages = import ./my-scripts { inherit pkgs;} ++
+  (with pkgs; [
    vscode
    git
    tree
@@ -132,7 +130,7 @@
    pciutils #collection of programs and manipulating config of PCI devices
    mangohud #monitoring fps, temp, gpu/cpu and mpre
    vulkan-loader
-  ];
+  ]);
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

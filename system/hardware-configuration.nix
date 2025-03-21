@@ -43,72 +43,72 @@ in
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   
-  hardware = {
-    graphics = {
-     enable = true;
-	 enable32Bit = true;
-     extraPackages = with pkgs; [
-       intel-media-driver
-       intel-vaapi-driver
-       libva-vdpau-driver
-       libvdpau-va-gl
-       nvidia-vaapi-driver
-       vpl-gpu-rt
-     ];
-	extraPackages32 = with pkgs.driversi686Linux; [
-        intel-vaapi-driver
-        libva-vdpau-driver  
-        libvdpau-va-gl
-    ];
-    };
-    nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.production; #legacy_535 / production
-      modesetting.enable = true;
-      powerManagement.enable = true;
-      nvidiaSettings = true;
-      prime = {
-        offload = {
-           enable = true;
-           enableOffloadCmd = true;
-        };
-        intelBusId = intelBus;
-        nvidiaBusId = nvidiaBus;
-      };
-    };
-  };
-  services.xserver.videoDrivers = [
-    "nvidia"
-  ];
-
-  environment.systemPackages = with pkgs; [
-  	(pkgs.writeShellScriptBin "nvidia-offload" ''
-      export __NV_PRIME_RENDER_OFFLOAD=1
-      export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-      export __GLX_VENDOR_LIBRARY_NAME=nvidia
-      export __VK_LAYER_NV_optimus=NVIDIA_only
-      exec "$@"
-    '')
-  ];
-  specialisation = {
-  	
-  	hybrid-sync = {
-		inheritParentConfig = true;
-		configuration = {
-			system.nixos.tags = [ "hybrid-sync" ];
-
-			hardware.nvidia = {
-				powerManagement.enable = lib.mkForce false;
-				prime = {
-					sync.enable = lib.mkForce true;
-					offload = {
-						enable = lib.mkForce false;
-						enableOffloadCmd = lib.mkForce false;
-					};
-					intelBusId = intelBus;
-					nvidiaBusId = nvidiaBus;
-				};
-			};
-		};
-	};
-  };
+ #  hardware = {
+ #    graphics = {
+ #     enable = true;
+	#  enable32Bit = true;
+ #     extraPackages = with pkgs; [
+ #       intel-media-driver
+ #       intel-vaapi-driver
+ #       libva-vdpau-driver
+ #       libvdpau-va-gl
+ #       nvidia-vaapi-driver
+ #       vpl-gpu-rt
+ #     ];
+	# extraPackages32 = with pkgs.driversi686Linux; [
+ #        intel-vaapi-driver
+ #        libva-vdpau-driver  
+ #        libvdpau-va-gl
+ #    ];
+ #    };
+ #    nvidia = {
+ #      package = config.boot.kernelPackages.nvidiaPackages.production; #legacy_535 / production
+ #      modesetting.enable = true;
+ #      powerManagement.enable = true;
+ #      nvidiaSettings = true;
+ #      prime = {
+ #        offload = {
+ #           enable = true;
+ #           enableOffloadCmd = true;
+ #        };
+ #        intelBusId = intelBus;
+ #        nvidiaBusId = nvidiaBus;
+ #      };
+ #    };
+ #  };
+ #  services.xserver.videoDrivers = [
+ #    "nvidia"
+ #  ];
+	#
+ #  environment.systemPackages = with pkgs; [
+ #  	(pkgs.writeShellScriptBin "nvidia-offload" ''
+ #      export __NV_PRIME_RENDER_OFFLOAD=1
+ #      export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+ #      export __GLX_VENDOR_LIBRARY_NAME=nvidia
+ #      export __VK_LAYER_NV_optimus=NVIDIA_only
+ #      exec "$@"
+ #    '')
+ #  ];
+ #  specialisation = {
+ #  	
+ #  	hybrid-sync = {
+	# 	inheritParentConfig = true;
+	# 	configuration = {
+	# 		system.nixos.tags = [ "hybrid-sync" ];
+	#
+	# 		hardware.nvidia = {
+	# 			powerManagement.enable = lib.mkForce false;
+	# 			prime = {
+	# 				sync.enable = lib.mkForce true;
+	# 				offload = {
+	# 					enable = lib.mkForce false;
+	# 					enableOffloadCmd = lib.mkForce false;
+	# 				};
+	# 				intelBusId = intelBus;
+	# 				nvidiaBusId = nvidiaBus;
+	# 			};
+	# 		};
+	# 	};
+	# };
+ #  };
 }

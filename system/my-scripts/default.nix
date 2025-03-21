@@ -1,11 +1,14 @@
-{ pkgs };
+{ pkgs }:
 
 let
-  imports = [
-	./list-scripts.nix
-	./list-specialisations.nix
-	./gpu-switch.nix
-  ];
+   imports = [
+  	./list-specialisations.nix
+  	./gpu-switch.nix
+	];
+
+	result = builtins.concatMap (path:
+	  let imported = import path { inherit pkgs; };
+	  in if builtins.isList imported then imported else [ imported ]
+	) imports;
 in 
-  builtins.concatMap (path: import path { inherit pkgs; }) imports
-  
+  result

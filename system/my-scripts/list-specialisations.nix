@@ -25,7 +25,7 @@ else
 fi
 
 echo -e "\nDaftar specialisation yang tersedia:"
-if [ -d "/run/current-system/specialisation" ]; then
+if [ -d "/run/current-system/specialisation/*" ]; then
     for spec in /run/current-system/specialisation/*; do
         if [ -d "$spec" ]; then
             name=$(basename "$spec")
