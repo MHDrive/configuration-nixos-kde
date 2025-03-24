@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
@@ -100,10 +100,16 @@
   # ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # nix.settings = {
-  #   substituters = ["https://hyprland.cachix.org"];
-  #   trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
-  # };
+  nix.settings = {
+    substituters = [
+	#	"https://hyprland.cachix.org"
+		"https://fmcachix.cachix.org"
+	];
+    trusted-public-keys = [
+	#	"hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+		"fmcachix.cachix.org-1:Z5j9jk83ctoCK22EWrbQL6AAP3CTYnZ/PHljlYSakrw="
+	];
+  };
  
   environment.systemPackages = import ./my-scripts { inherit pkgs;} ++
   (with pkgs; [
@@ -130,6 +136,8 @@
    pciutils #collection of programs and manipulating config of PCI devices
    mangohud #monitoring fps, temp, gpu/cpu and mpre
    vulkan-loader
+   # inputs.xdmanpkgs.packages.${pkgs.system}.xdman
+   xdman
   ]);
 
   # Some programs need SUID wrappers, can be configured further or are
