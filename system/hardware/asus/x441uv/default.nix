@@ -5,6 +5,7 @@
 	# ../../common/cpu/intel
 	../../common/gpu/intel
 	../../common/gpu/nvidia
+	./video-acceleration.nix
   ];
    hardware = {
    	intelgpu.enableHybridCodec = true;

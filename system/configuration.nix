@@ -2,13 +2,16 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-	  ./hardware/asus/x441uv
+	    ./hardware/asus/x441uv
+	    ./programs
+	    ./../de/kde/plasma6
+		./dev/php
     ];
 
   # Bootloader.
@@ -44,6 +47,7 @@
     layout = "us";
     variant = "";
   };
+  # services.fractalart.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -57,7 +61,7 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
@@ -71,21 +75,23 @@
   users.users.mh = {
     isNormalUser = true;
     description = "MH";
-    extraGroups = [ "networkmanager" "wheel" ];
+	shell = pkgs.zsh;
+    extraGroups = [ "networkmanager" "wheel" "phpdemo" ];
     packages = with pkgs; [
       kdePackages.kate
     #  thunderbird
     ];
   };
+  # users.defaultUserShell = pkgs.zsh;
 
   # Install firefox.
-  programs.firefox.enable = true;
-  programs.starship.enable = true;
-  programs.steam = {
-	enable = true;
-	remotePlay.openFirewall = true;
-	localNetworkGameTransfers.openFirewall = true;
-  };
+ #  programs.firefox.enable = true;
+ #  programs.starship.enable = true;
+ #  programs.steam = {
+	# enable = true;
+	# remotePlay.openFirewall = true;
+	# localNetworkGameTransfers.openFirewall = true;
+ #  };
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -100,15 +106,50 @@
   # ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  nix.settings = {
-    substituters = [
+  #nix.settings = {
+    #substituters = [
 	#	"https://hyprland.cachix.org"
-		"https://fmcachix.cachix.org"
-	];
-    trusted-public-keys = [
+	#	"https://fmcachix.cachix.org"
+	#];
+    #trusted-public-keys = [
 	#	"hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-		"fmcachix.cachix.org-1:Z5j9jk83ctoCK22EWrbQL6AAP3CTYnZ/PHljlYSakrw="
+	#	"fmcachix.cachix.org-1:Z5j9jk83ctoCK22EWrbQL6AAP3CTYnZ/PHljlYSakrw="
+	#];
+  #};
+  fonts = {
+	fontDir.enable = true;
+	enableDefaultPackages = true;
+	packages = with pkgs; [
+		(nerdfonts.override {
+			fonts = [
+		      "JetBrainsMono" # Font coding utama dengan ligatures
+    	      "FiraCode"      # Alternatif populer dengan ligatures
+	          "Hack"          # Font monospace klasik
+			];
+		})
+
+		# Font UI dasar
+	    inter             # Font UI modern
+	    noto-fonts        # Font umum untuk dukungan bahasa luas
+	    noto-fonts-emoji  # Dukungan emoji
+      
+	    # Font untuk dokumen
+	    dejavu_fonts      # Font universal dengan dukungan karakter luas
+	    liberation_ttf    # Pengganti untuk font Microsoft
+      
+    	# Font khusus
+	    font-awesome      # Icon untuk UI
 	];
+
+	# Konfigurasi fontconfig yang sederhana
+    fontconfig = {
+      defaultFonts = {
+        serif = [ "DejaVu Serif" "Liberation Serif" ];
+        sansSerif = [ "Inter" "DejaVu Sans" "Liberation Sans" ];
+        monospace = [ "JetBrainsMono Nerd Font" "FiraCode Nerd Font" "Hack Nerd Font" "DejaVu Sans Mono" ];
+        emoji = [ "Noto Color Emoji" ];
+      };
+    };
   };
  
   environment.systemPackages = import ./my-scripts { inherit pkgs;} ++
@@ -137,7 +178,10 @@
    mangohud #monitoring fps, temp, gpu/cpu and mpre
    vulkan-loader
    # inputs.xdmanpkgs.packages.${pkgs.system}.xdman
-   xdman
+   # fmpkgs.xdman
+   # google-chrome
+   bindfs
+   ntfs3g
   ]);
 
   # Some programs need SUID wrappers, can be configured further or are

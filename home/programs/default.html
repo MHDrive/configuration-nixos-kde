@@ -1,0 +1,6 @@
+{ lib, ... }:
+
+{
+  imports = lib.mh.autoImport.flatDir ./.;
+  programs.home-manager.enable = true;
+}

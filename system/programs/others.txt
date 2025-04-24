@@ -1,0 +1,11 @@
+{ lib, ... }:
+
+let
+  filterFolder = lib.filterAttrs (name: type: type == "directory") (builtins.readDir ./.);
+  hasDefault = name: _type: builtins.pathExists (./. + "/${name}/default.nix");
+  imports = lib.mapAttrsToList (name: _: ./. + "/${name}/default.nix") (lib.filterAttrs hasDefault filterFolder);
+in 
+{
+  inherit imports;
+}
+
