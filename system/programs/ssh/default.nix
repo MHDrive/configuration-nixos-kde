@@ -9,6 +9,7 @@
       
       # Konfigurasi untuk GitHub
       Host github.com
+	    HostName github.com
         User git
         IdentityFile ~/.ssh/github_key
         IdentitiesOnly yes
