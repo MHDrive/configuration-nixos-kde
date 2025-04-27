@@ -7,23 +7,29 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+	# niri window manager
+    niri.url = "github:sodiboo/niri";
+
+	# Stylix theming (optional)
+    stylix.url = "github:danth/stylix";
+
 	# fmpkgs.url= "github:fmway/fmpkgs";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }: let
+  outputs = inputs@{ nixpkgs, niri, home-manager, stylix, ... }: let
     lib = nixpkgs.lib.extend (_: _: { inherit mh; });
 	mh = import ./utility/mylib { inherit lib; };
   in {
   	lib = mh;
     nixosConfigurations = {
-      default = lib.nixosSystem {
+      mh-nixos = lib.nixosSystem {
       	system = "x86_64-linux";
 	  	specialArgs = {
-			inherit lib;
+			inherit inputs lib;
 	  	};
 
       	modules = [
-        	./system/configuration.nix
+        	./system
         	home-manager.nixosModules.home-manager
 			{
 	  			home-manager.useGlobalPkgs = true;

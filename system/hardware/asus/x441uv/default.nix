@@ -5,8 +5,11 @@
 	# ../../common/cpu/intel
 	../../common/gpu/intel
 	../../common/gpu/nvidia
-	./video-acceleration.nix
+	
   ];
+#   ++ lib.optional (lib.versionOlder lib.version "24.12pre") [
+# 	./video-acceleration.nix
+#   ];
    hardware = {
    	intelgpu.enableHybridCodec = true;
 	nvidia = {

@@ -2,23 +2,16 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-	    ./hardware/asus/x441uv
-	    ./programs
-	    ./../de/kde/plasma6
-		./dev/php
-    ];
+  imports = lib.mh.autoImport.subDir ./.;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "default"; # Define your hostname.
+  networking.hostName = "mh-nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -75,7 +68,7 @@
   users.users.mh = {
     isNormalUser = true;
     description = "MH";
-	shell = pkgs.zsh;
+	  shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" "phpdemo" ];
     packages = with pkgs; [
       kdePackages.kate
@@ -116,73 +109,7 @@
 	#	"fmcachix.cachix.org-1:Z5j9jk83ctoCK22EWrbQL6AAP3CTYnZ/PHljlYSakrw="
 	#];
   #};
-  fonts = {
-	fontDir.enable = true;
-	enableDefaultPackages = true;
-	packages = with pkgs; [
-		(nerdfonts.override {
-			fonts = [
-		      "JetBrainsMono" # Font coding utama dengan ligatures
-    	      "FiraCode"      # Alternatif populer dengan ligatures
-	          "Hack"          # Font monospace klasik
-			];
-		})
 
-		# Font UI dasar
-	    inter             # Font UI modern
-	    noto-fonts        # Font umum untuk dukungan bahasa luas
-	    noto-fonts-emoji  # Dukungan emoji
-      
-	    # Font untuk dokumen
-	    dejavu_fonts      # Font universal dengan dukungan karakter luas
-	    liberation_ttf    # Pengganti untuk font Microsoft
-      
-    	# Font khusus
-	    font-awesome      # Icon untuk UI
-	];
-
-	# Konfigurasi fontconfig yang sederhana
-    fontconfig = {
-      defaultFonts = {
-        serif = [ "DejaVu Serif" "Liberation Serif" ];
-        sansSerif = [ "Inter" "DejaVu Sans" "Liberation Sans" ];
-        monospace = [ "JetBrainsMono Nerd Font" "FiraCode Nerd Font" "Hack Nerd Font" "DejaVu Sans Mono" ];
-        emoji = [ "Noto Color Emoji" ];
-      };
-    };
-  };
- 
-  environment.systemPackages = import ./my-scripts { inherit pkgs;} ++
-  (with pkgs; [
-   vscode
-   git
-   tree
-   vim
-   neovim
-   mesa-demos
-   libreoffice-qt6-fresh
-   pcsx2
-   jstest-gtk
-   telegram-desktop
-   htop
-   spotify
-   bat
-   flatpak
-   lshw
-   vlc
-   discord
-   lua54Packages.lua
-   ripgrep
-   fd
-   pciutils #collection of programs and manipulating config of PCI devices
-   mangohud #monitoring fps, temp, gpu/cpu and mpre
-   vulkan-loader
-   # inputs.xdmanpkgs.packages.${pkgs.system}.xdman
-   # fmpkgs.xdman
-   # google-chrome
-   bindfs
-   ntfs3g
-  ]);
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -202,6 +129,7 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
+  networking.nameservers = [ "8.8.8.8" "8.8.4.4" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
