@@ -11,7 +11,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "mh-nixos"; # Define your hostname.
+  # networking.hostName = "default"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -27,21 +27,18 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
-
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
-
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
+  # services.xserver.xkb = {
+  #   layout = "us";
+  #   variant = "";
+  # };
   # services.fractalart.enable = true;
-
+  
+ #  xdg.portal = {
+ #    enable = true;
+	# extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
+ #  };
+   
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -68,11 +65,11 @@
   users.users.mh = {
     isNormalUser = true;
     description = "MH";
-	  shell = pkgs.zsh;
+	shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" "phpdemo" ];
     packages = with pkgs; [
-      kdePackages.kate
-    #  thunderbird
+  #    kdePackages.kate
+  #  thunderbird
     ];
   };
   # users.defaultUserShell = pkgs.zsh;

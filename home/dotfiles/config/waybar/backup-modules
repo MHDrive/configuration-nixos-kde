@@ -1,0 +1,19 @@
+//  __  __           _       _
+// |  \/  | ___   __| |_   _| | ___  ___
+// | |\/| |/ _ \ / _` | | | | |/ _ \/ __|
+// | |  | | (_) | (_| | |_| | |  __/\__ \
+// |_|  |_|\___/ \__,_|\__,_|_|\___||___/
+//
+//
+// by Muhammad Hamdi (2025)
+// -----------------------------------------------------
+//
+{
+    // Fuzzel Application Launcher
+    "custom/appmenu": {
+        "format": "Apps",
+        "on-click": "fuzzel",
+        // "on-click-right": "~/.config/hypr/scripts/keybindings.sh",
+        "tooltip": false
+    },
+}

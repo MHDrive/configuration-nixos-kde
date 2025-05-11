@@ -1,0 +1,192 @@
+{
+   
+    "custom/appmenu": {
+        "format": "Apps",
+        "on-click": "fuzzel",
+    
+        "tooltip": false
+    },
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "icon-size": 18,
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close",
+        "ignore-list": [
+           "Alacritty"
+        ],
+        "app_ids-mapping": {
+            "firefoxdeveloperedition": "firefox-developer-edition"
+        },
+        "rewrite": {
+            "Firefox Web Browser": "Firefox",
+            "Foot Server": "Terminal"
+        }
+    },
+    "custom/filemanager": {
+        "format": "",
+        "on-click": "pcmanfm",
+        "tooltip": false
+    },
+
+    "custom/browser": {
+        "format": "",
+        "on-click": "firefox",
+        "tooltip": false
+    },
+    "group/quicklinks": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/filemanager",
+            "custom/browser"
+         ]
+    },
+    "niri/window": {
+        "rewrite": {
+            "(.*) - Brave": "$1",
+            "(.*) - Brave Firefox": "$1",
+            "(.*) - Mozila Firefox": "$1",
+            "(.*) - Mozila Firefox Search": "$1",
+	    "(.*) - Firefox": "$1",
+            "(.*) - Firefox Developer Edition": "$1",
+            "(.*) Microsoft Teams": "$1"
+        },
+        "separate-outputs": true
+    },
+    "niri/workspaces" : {
+        "on-click": "activate",
+        "active-only": false,
+        "all-outputs": true,
+        "format": "{}",
+        "format-icons": {
+			"urgent": "",
+			"active": "",
+			"default": ""
+        },
+        "persistent-workspaces": {
+             "*": 5
+        }
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{volume}%  {icon} {format_source}",
+        "format-bluetooth-muted": "  {icon} {format_source}",
+        "format-muted": "  {format_source}",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", " ", " "]
+        },
+        "on-click": "pavucontrol"
+    },
+    "bluetooth": {
+        "format-disabled": "",
+        "format-off": "",
+        "interval": 30,
+        "on-click": "blueman-manager",
+        "format-no-controller": ""
+    },
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}   {capacity}%",
+        "format-charging": "  {capacity}%",
+        "format-plugged": "  {capacity}%",
+        "format-alt": "{icon}  {time}",
+        "format-icons": [" ", " ", " ", " ", " "]
+    },
+    "network": {
+        "format": "{ifname}",
+        "format-wifi": "   {signalStrength}%",
+        "format-ethernet": "  {ipaddr}",
+        "format-disconnected": "Not connected",
+        "tooltip-format": " {ifname} via {gwaddr}",
+        "tooltip-format-wifi": "   {essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "  {ifname} ({ipaddr}/{cidr})",
+        "tooltip-format-disconnected": "Disconnected",
+        "max-length": 50,
+        "on-click": "kitty -e nmtui"
+    },
+    "custom/system": {
+        "format": "",
+        "tooltip": false
+    },
+    "cpu": {
+        "format": "/ C {usage}% ",
+        "on-click": "kitty -e htop"
+    },
+    "memory": {
+        "format": "/ M {}% ",
+        "on-click": "kitty -e htop"
+    },
+    "disk": {
+        "interval": 30,
+        "format": "D {percentage_used}% ",
+        "path": "/",
+        "on-click": "kitty -e htop"
+    },
+    "custom/space": {
+        "format": "/ K {short}"
+    },
+    "group/hardware": {
+        "orientation": "horizontal",
+        "modules": [
+            "disk",
+            "cpu",
+            "memory",
+            "custom/space"
+        ]
+    },
+    "custom/exit": {
+        "format": "",
+        "on-click": "wlogout",
+        "tooltip": false
+    },
+    "clock": {
+        "interval": 1,
+        "format": "{:%H:%M:%S}",
+        "format-alt": "{:%A, %d %B %Y}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "tooltip": true,
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "on-click-right": "mode",
+            "format": {
+                "months": "<span color='#ffead3'><b>{}</b></span>",
+                "days": "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click": "mode",
+            "on-click-right": "mode",
+            "on-click-middle": "gnome-calendar",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        },
+        "css-name": "clock-module"
+    },
+    "custom/clock": {
+          "exec": "~/.config/waybar/scripts/clock.js --loop",
+
+          "return-type": "json",
+          "interval": 1,
+          "tooltip": true,
+          "on-click": "mode",
+          "on-click-right": "gnome-calendar"
+    }
+}

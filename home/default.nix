@@ -1,7 +1,10 @@
 { config, pkgs, lib, ...  }:
 {
+	# imports = lib.mh.autoImport.subDir ./.;
 	imports = [
-		./programs
+	  ./programs
+	  ./wm
+	  ./dotfiles/xdg-script
 	];
 	home = {
 		username = "mh";
@@ -22,11 +25,31 @@
 		activation.copyFastfetchImages = 
 		let
 		  to = "${config.home.homeDirectory}/.local/share/fastfetch/images";
-		  from = ./configuration/fastfetch/images;
+		  from = ./dotfiles/local/share/fastfetch/images;
 		in 
 		lib.hm.dag.entryAfter [ "writeBoundary" ] ''
 			[ -e "${to}" ] || mkdir -p "${to}"
 			cp -rf "${from}/"* "${to}/"
+		'';
+
+		activation.copyConfigNiri = 
+		let
+		  to = "${config.xdg.configHome}/niri";
+		  from = ./dotfiles/config/niri;
+		in
+		lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+		  [ -e "${to}" ] || mkdir -p "${to}"
+		  cp -rf "${from}/"* "${to}/"
+		'';
+
+		activation.copyConfigWaybar = 
+		let
+		  to = "${config.xdg.configHome}/waybar";
+		  from = ./dotfiles/config/waybar;
+		in
+		lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+		  [ -e "${to}" ] || mkdir -p "${to}"
+		  cp -rf "${from}/"* "${to}/"
 		'';
 		stateVersion = "24.11";
 	};
