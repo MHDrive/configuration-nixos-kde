@@ -3,7 +3,7 @@
 {
   xdg.configFile."scripts/waybar/launch.sh" = {
     text = ''
-    #!/bin/bash
+    #!/run/current-system/sw/bin/bash
     #                    __
     #  _    _____ ___ __/ /  ___ _____
     # | |/|/ / _ `/ // / _ \/ _ `/ __/

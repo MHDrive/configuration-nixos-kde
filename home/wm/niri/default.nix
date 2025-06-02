@@ -2,8 +2,9 @@
 
 {
   imports = [
-    ./mako
-    # ./waybar
+    ./mako/default.nix
+    ./fuzzel/default.nix
+    ./waybar/default.nix
   ];
   home.packages = with pkgs; [
     kitty	   # Terminal

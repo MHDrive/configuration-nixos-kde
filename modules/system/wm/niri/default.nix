@@ -1,58 +1,61 @@
 { config, lib, pkgs, ... }:
 
 {
-  programs.niri = {
-    enable = true;
-	package = pkgs.niri;
-  };
+  programs.niri.enable = true;
 
-  # X11 windows system
-  services.xserver.enable = false;
-
-  # KDE Plasma DE
-  services.displayManager.enable = false;
-  services.displayManager.sddm.enable = false;
-  services.desktopManager.plasma6.enable = false;
-  
- #  services.displayManager.sessionPackages = [
- #    pkgs.niri
-	# pkgs.wayland
- #  ];
- #  services.displayManager.defaultSession = "wayland+niri";
-  
-  
-  services.greetd = {
-  enable = true;
-  settings = {
-    default_session = {
-      command = ''
-        ${pkgs.greetd.tuigreet}/bin/tuigreet --cmd "dbus-run-session ${pkgs.niri}/bin/niri"
-      '';
-      user = "mh";
+  xdg = {
+    autostart.enable = true;
+	menus.enable = true;
+	mime.enable = true;
+	icons.enable = true;
+    portal = {
+      enable = true;
     };
   };
-};
-  environment.sessionVariables = {
-  XDG_SESSION_TYPE = "wayland";
-  XDG_CURRENT_DESKTOP = "niri";
-  MOZ_ENABLE_WAYLAND = "1";
-  QT_QPA_PLATFORM = "wayland";
-  SDL_VIDEODRIVER = "wayland";
-  CLUTTER_BACKEND = "wayland";
-};
+  services = {
+	  displayManager = {
+	    enable = true;
+		ly.enable = true;
+	    sessionPackages = [ pkgs.niri ];
+		defaultSession = "niri";
+	  };
+  };
 
-programs.sway.enable = true;  # Mengaktifkan komponen Wayland dasar
-xdg.portal = {
-  enable = true;
-  wlr.enable = lib.mkForce true;
-  extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
-};
+  environment = {
+    variables = {
+	  XCURSOR_THEME = "default";
+	  XCURSOR_SIZE = 24;
+	};
+    systemPackages = with pkgs; [
+      xdg-utils
+      # niri
+	  # xwayland
+	  xwayland-satellite
+	  # wl-clipboard
+	  # swaylock    # Screen locker
+   #    swayidle    # Idle management
+	  # waybar      # Status bar (opsional)
+	  # mako        # Notification daemon
+	  kanshi      # Output manager
+	  brightnessctl
+    ];
+  };
 
-  programs.xwayland.enable = true;
 
-  programs.waybar.enable = true;
+  security.polkit.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    wayland
-  ];
+  security.pam.services.swaylock = {};
+  programs = {
+    dconf.enable = true;
+  };
+  fonts.enableDefaultPackages = true;
+
+  services.dbus.enable = true;
+
+  services.pipewire = {
+    enable = true;
+	alsa.enable = true;
+	pulse.enable = true;
+  };
+
 }

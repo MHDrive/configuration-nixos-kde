@@ -1,0 +1,196 @@
+{ config, lib, pkgs, ... }:
+
+{
+  programs.niri.enable = true;
+  # programs.xwayland.enable = true;
+ #  xdg = {
+ #    autostart.enable = true;
+	# menus.enable = true;
+	# mime.enable = true;
+	# icons.enable = true;
+ #  };
+
+
+
+  services = {
+  #  greetd = {
+  #    enable = true;
+	 # settings = {
+	 #   default_session = {
+	 #     command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd niri --sessions /etc/greetd/sessions";
+	 #     user = "mh";
+	 #   };
+	 # };
+  #  };
+   # displayManager = {
+	#    enable = true;
+	#    sessionPackages = [ pkgs.niri ];
+	#    defaultSession = "niri";
+	#    autoLogin = {
+	#      enable = true;
+	# 	 user = "mh";
+	#    };
+	#    execCmd = "exec niri";
+	#   # gdm.enable = true;
+	# };
+	gnome.gnome-keyring.enable = true;
+	xserver = {
+	  enable = true;
+	  displayManager = {
+	    sessionPackages = [ pkgs.niri ];
+		defaultSession = "niri";
+		gdm = {
+		  enable = true;
+		  wayland = true;
+		};
+	  };
+	  # xwayland.enable = true;
+	};
+  };
+
+  # environment.etc."greetd/sessions/niri.desktop".text = ''
+  #   [Desktop Entry]
+  #   Name=Niri
+  #   Comment=Niri Wayland Compositor
+  #   Exec=niri
+  #   Type=Application
+  # '';
+
+
+ #  hardware = {
+	# graphics.enable = true;
+ #  };
+
+  environment.systemPackages = with pkgs; [
+    xdg-utils
+    niri
+	xwayland
+	xwayland-satellite
+	wl-clipboard
+	swaylock    # Screen locker
+    swayidle    # Idle management
+	waybar      # Status bar (opsional)
+	mako        # Notification daemon
+	kanshi      # Output manager
+  ];
+ #  xdg.portal = {
+ #    enable = true;
+	# extraPortals = [ 
+	#   # pkgs.xdg-desktop-portal-gnome 
+	#   pkgs.xdg-desktop-portal-wlr
+	# ];
+	# configPackages = [ pkgs.niri ];
+	# wlr = {
+ #      enable = true;
+ #      settings = {
+ #        screencast = {
+ #          chooser_type = "simple";
+ #          chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -or";
+ #        };
+ #      };
+ #    };
+ # };
+
+  security.polkit.enable = true;
+
+ #  systemd.user.services = {
+ # #    niri = {
+ # #      description = "Niri Wayland Compositor";
+ # #      wantedBy = [ "graphical-session.target" ];
+ # #      wants = [ "graphical-session-pre.target" ];
+ # #      after = [ "graphical-session-pre.target" ];
+ # #      serviceConfig = {
+ # #        Type = "simple";
+ # #        ExecStart = "${pkgs.niri}/bin/niri";
+ # #        Restart = "on-failure";
+ # #        RestartSec = 1;
+ # #        TimeoutStopSec = 10;
+ # #      };
+	# # };
+	# niri-flake-polkit = {
+	#   description = "PolicyKit Authentication Agent provided by niri-flake";
+	#   wantedBy = ["niri.service"];
+	#   after = ["graphical-session.target"];
+	#   partOf = ["graphical-session.target"];
+	#   serviceConfig = {
+	#     Type = "simple";
+	# 	ExecStart = "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
+	# 	Restart = "on-failure";RestartSec = 1;
+	# 	TimeoutStopSec = 10;
+ #      };
+	# };
+	# # Xwayland satellite service jika diperlukan
+ #    xwayland-satellite = lib.mkIf config.programs.xwayland.enable {
+ #      description = "Xwayland Satellite for Niri";
+ #      wantedBy = [ "niri.service" ];
+ #      partOf = [ "niri.service" ];
+ #      after = [ "niri.service" ];
+ #      serviceConfig = {
+ #        Type = "simple";
+ #        ExecStart = "${pkgs.xwayland-satellite}/bin/xwayland-satellite";
+ #        Restart = "on-failure";
+ #        RestartSec = 1;
+ #      };
+ #    };
+	# # Tambahkan mako untuk notifikasi jika diperlukan
+ #    mako = lib.mkIf (builtins.elem pkgs.mako config.environment.systemPackages) {
+ #      description = "Lightweight Wayland notification daemon";
+ #      wantedBy = [ "graphical-session.target" ];
+ #      partOf = [ "graphical-session.target" ];
+ #      after = [ "graphical-session-pre.target" ];
+ #      serviceConfig = {
+ #        Type = "simple";
+ #        ExecStart = "${pkgs.mako}/bin/mako";
+ #        RestartSec = 5;
+ #        Restart = "always";
+ #      };
+ #    };
+ #
+ #    # Tambahkan swayidle jika diperlukan
+ #    swayidle = lib.mkIf (builtins.elem pkgs.swayidle config.environment.systemPackages) {
+ #      description = "Idle management daemon for Wayland";
+ #      wantedBy = [ "graphical-session.target" ];
+ #      partOf = [ "graphical-session.target" ];
+ #      after = [ "graphical-session-pre.target" ];
+ #      serviceConfig = {
+ #        Type = "simple";
+ #        ExecStart = ''
+ #          ${pkgs.swayidle}/bin/swayidle -w \
+ #            timeout 300 '${pkgs.swaylock}/bin/swaylock -f' \
+ #            timeout 600 'systemctl suspend'
+ #        '';
+ #        RestartSec = 5;
+ #        Restart = "always";
+ #      };
+ #    };
+ #  };
+  security.pam.services.swaylock = {};
+  programs = {
+    dconf.enable = true;
+	bash.enableCompletion = true;
+	zsh.enableCompletion = true;
+	fish.enable = true;
+  };
+  fonts.enableDefaultPackages = true;
+
+  services.dbus.enable = true;
+
+  services.pipewire = {
+    enable = true;
+	alsa.enable = true;
+	pulse.enable = true;
+  };
+
+ #  environment.sessionVariables = {
+ #    XDG_SESSION_TYPE = "wayland";
+ #    XDG_CURRENT_DESKTOP = "niri";
+ #    MOZ_ENABLE_WAYLAND = "1"; 
+ #    # NIXOS_OZONE_WL = "1";
+	# # DISPLAY = null;
+	# QT_QPA_PLATFORM = "wayland";
+	# # Untuk aplikasi GTK
+ #    # GDK_BACKEND = "wayland";
+ #  };
+
+
+}

@@ -2,9 +2,9 @@
 {
 	# imports = lib.mh.autoImport.subDir ./.;
 	imports = [
-	  ./programs
-	  ./wm
-	  ./dotfiles/xdg-script
+	  ./programs/default.nix
+	  ./wm/default.nix
+	  ./dotfiles/xdg-script/default.nix
 	];
 	home = {
 		username = "mh";
@@ -42,15 +42,15 @@
 		  cp -rf "${from}/"* "${to}/"
 		'';
 
-		activation.copyConfigWaybar = 
-		let
-		  to = "${config.xdg.configHome}/waybar";
-		  from = ./dotfiles/config/waybar;
-		in
-		lib.hm.dag.entryBefore [ "writeBoundary" ] ''
-		  [ -e "${to}" ] || mkdir -p "${to}"
-		  cp -rf "${from}/"* "${to}/"
-		'';
+		# activation.copyConfigWaybar = 
+		# let
+		#   to = "${config.xdg.configHome}/waybar";
+		#   from = ./dotfiles/config/waybar;
+		# in
+		# lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+		#   [ -e "${to}" ] || mkdir -p "${to}"
+		#   cp -rf "${from}/"* "${to}/"
+		# '';
 		stateVersion = "24.11";
 	};
 }

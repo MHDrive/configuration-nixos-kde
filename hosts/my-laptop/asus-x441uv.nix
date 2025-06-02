@@ -1,8 +1,8 @@
 { config, lib, pkgs, inputs, ... }:
 
-# let
-#   mh = import ./../../utility/mylib { inherit lib; };
-# in 
+let
+  mh = import ./../../utility/mylib { inherit lib; };
+in 
 {
   imports = [
 	# Import modul yang dibutuhkan
@@ -14,7 +14,7 @@
       home-manager.useUserPackages = true;
       home-manager.users.mh = import ./../../home;
       home-manager.extraSpecialArgs = { inherit inputs; };
-      inputs.nixpkgs.overlays = [
+      nixpkgs.overlays = [
         (self: super: {
           lib = super.lib.extend (_: _: { inherit mh; });
         })

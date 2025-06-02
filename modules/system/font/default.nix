@@ -5,13 +5,15 @@
 		fontDir.enable = true;
 		enableDefaultPackages = true;
 		packages = with pkgs; [
-			(nerdfonts.override {
-				fonts = [
-				"JetBrainsMono" # Font coding utama dengan ligatures
-				"FiraCode"      # Alternatif populer dengan ligatures
-				"Hack"          # Font monospace klasik
-				];
-			})
+			pkgs.nerd-fonts._0xproto
+		        pkgs.nerd-fonts.droid-sans-mono
+			#(nerdfonts.override {
+			#	fonts = [
+			#	"JetBrainsMono" # Font coding utama dengan ligatures
+			#	"FiraCode"      # Alternatif populer dengan ligatures
+			#	"Hack"          # Font monospace klasik
+			#	];
+			#})
 
 			# Font UI dasar
 			inter             # Font UI modern

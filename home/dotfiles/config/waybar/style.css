@@ -1,15 +1,21 @@
 /* -----------------------------------------------------
  * Import Pywal colors
  * ----------------------------------------------------- */
-@define-color backgroundlight rgba(226, 226, 233, 1.0); 
-@define-color backgrounddark #1e1e2e; 
-@define-color workspacesbackground1 rgba(226, 226, 233, 1.0);
-@define-color workspacesbackground2 rgba(0, 27, 63, 1.0);
-@define-color bordercolor rgba(226, 226, 233, 1.0);
-@define-color textcolor1 #cdd6f4;
-@define-color textcolor2 rgba(0, 27, 63, 1.0);
-@define-color textcolor3 rgba(226, 226, 233, 1.0);
-@define-color iconcolor rgba(226, 226, 233, 1.0);
+
+@define-color color1 #1e1e2e;
+@define-color color2 #cdd6f4;
+@define-color bghover #313244;
+@define-color colorhover #a6e3a1;
+
+@define-color backgroundlight @color2; 
+@define-color backgrounddark @color1; 
+@define-color workspacesbackground1 @color2;
+@define-color workspacesbackground2 @color1;
+@define-color bordercolor @color2;
+@define-color textcolor1 @color2;
+@define-color textcolor2 @color1;
+@define-color textcolor3 @color2;
+@define-color iconcolor @color2;
  
   * {
     font-family: "Fira Sans Semibold", "Font Awesome 6 Free", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
@@ -61,8 +67,8 @@ window#waybar {
 }
 
 #workspaces button:hover {
-    background: @workspacesbackground2;
-    color: @textcolor1;
+    background: @bghover;
+    color: @colorhover;
     border-radius: 20px;
     opacity: 0.7;
 }
@@ -260,8 +266,8 @@ window#waybar.empty #window {
  * ----------------------------------------------------- */
 /* Style untuk modul jam */
 #clock {
-    background-color: #1e1e2e;
-    color: #cdd6f4;
+    background-color: @backgrounddark;
+    color: @textcolor1;
     border-radius: 10px;
     margin: 5px;
     padding: 0 10px;
@@ -272,8 +278,8 @@ window#waybar.empty #window {
 }
 
 #clock:hover {
-    background-color: #313244;
-    color: #a6e3a1;
+    background-color: @bghover;
+    color: @colorhover;
     box-shadow: 0 0 5px rgba(166, 227, 161, 0.5);
 }
 

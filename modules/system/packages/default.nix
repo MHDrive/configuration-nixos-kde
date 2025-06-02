@@ -32,5 +32,27 @@ environment.systemPackages = import ./my-scripts { inherit pkgs;} ++
    bindfs
    ntfs3g
    yt-dlp  # downloader yt via terminal yt-dlp "url"
+
+   lf pcmanfm gvfs # file manager
+   # android-file-transfer jmtpfs # MPT support for smartphone
+   usbutils
+   # mtpfs
+   simple-mtpfs
+
+
+   eza # alternatif modern tree/ls
+   libnotify # notify-send "teks"
+   pavucontrol # control sound/audio (pulseaudio)
+   blueman # bluetooth manager 
+   ags # clock and calender
+   wlogout # logout manager
+   swww  # wallpaper cli
+   wl-clipboard  # copy paste for wayland
+
+   # nodejs_23
+   nodejs_24
+   gnome-calendar
+   foot
+   alacritty
   ]);
 }

@@ -49,8 +49,8 @@
         "network",
         "group/hardware",
         "custom/exit",
-        //"clock"
-	"custom/clock"
+        "clock"
+	//"custom/clock"
     ]
 }
 
